@@ -3,10 +3,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using ImGuiExtraNET;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
 using ImGuiNET;
+using ImGuizmoNET;
 using ImPlotNET;
 using imnodesNET;
 
@@ -31,6 +33,10 @@ namespace ImGuiExample
         private static byte[] _memoryEditorData;
         private static uint s_tab_bar_flags = (uint)ImGuiTabBarFlags.Reorderable;
         static bool[] s_opened = { true, true, true, true }; // Persistent user state
+
+        private static Vector2[] _points = new Vector2[24];
+
+        private static int _selection = 0;
 
         static void SetThing(out float i, float val) { i = val; }
 
@@ -94,8 +100,9 @@ namespace ImGuiExample
                 ImGui.Text("");
                 ImGui.Text(string.Empty);
                 ImGui.Text("Hello, world!");                                        // Display some text (you can use a format string too)
-                ImGui.SliderFloat("float", ref _f, 0, 1, _f.ToString("0.000"));  // Edit 1 float using a slider from 0.0f to 1.0f    
-                //ImGui.ColorEdit3("clear color", ref _clearColor);                   // Edit 3 floats representing a color
+                ImGui.SliderFloat("float", ref _f, 0, 1, _f.ToString("0.000"));  // Edit 1 float using a slider from 0.0f to 1.0f
+                ImGuiExtra.Curve("My Curve", new Vector2(200,200), _points.Length, ref _points[0], ref _selection);
+                // ImGui.ColorEdit3("clear color", ref _clearColor);                   // Edit 3 floats representing a color
 
                 ImGui.Text($"Mouse position: {ImGui.GetMousePos()}");
 

@@ -46,6 +46,7 @@ namespace CodeGenerator
                 "cimplot" => "ImPlotNET",
                 "cimnodes" => "imnodesNET",
                 "cimguizmo" => "ImGuizmoNET",
+                "cimgui_extra" => "ImGuiExtraNET",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -55,6 +56,7 @@ namespace CodeGenerator
                 "cimplot" => true,
                 "cimnodes" => true,
                 "cimguizmo" => true,
+                "cimgui_extra" => true,
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -64,6 +66,7 @@ namespace CodeGenerator
                 "cimplot" => "ImPlot",
                 "cimnodes" => "imnodes",
                 "cimguizmo" => "ImGuizmo",
+                "cimgui_extra" => "ImGuiExtra",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -73,6 +76,7 @@ namespace CodeGenerator
                 "cimplot" => "cimgui",
                 "cimnodes" => "cimgui",
                 "cimguizmo" => "cimgui",
+                "cimgui_extra" => "cimgui",
                 _ => throw new NotImplementedException()
             };
             
