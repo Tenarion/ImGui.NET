@@ -47,6 +47,7 @@ namespace CodeGenerator
                 "cimnodes" => "imnodesNET",
                 "cimguizmo" => "ImGuizmoNET",
                 "cimgui_extra" => "ImGuiExtraNET",
+                "cimgui_knobs" => "ImGuiKnobsNET",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -57,6 +58,7 @@ namespace CodeGenerator
                 "cimnodes" => true,
                 "cimguizmo" => true,
                 "cimgui_extra" => true,
+                "cimgui_knobs" => true,
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -67,6 +69,7 @@ namespace CodeGenerator
                 "cimnodes" => "imnodes",
                 "cimguizmo" => "ImGuizmo",
                 "cimgui_extra" => "ImGuiExtra",
+                "cimgui_knobs" => "ImGuiKnobs",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -77,6 +80,7 @@ namespace CodeGenerator
                 "cimnodes" => "cimgui",
                 "cimguizmo" => "cimgui",
                 "cimgui_extra" => "cimgui",
+                "cimgui_knobs" => "cimgui",
                 _ => throw new NotImplementedException()
             };
             
@@ -128,24 +132,25 @@ namespace CodeGenerator
                     foreach (TypeReference field in td.Fields)
                     {
                         string typeStr = GetTypeString(field.Type, field.IsFunctionPointer);
+                        var name = CorrectIdentifier(field.Name);
 
                         if (field.ArraySize != 0)
                         {
                             if (TypeInfo.LegalFixedTypes.Contains(typeStr))
                             {
-                                writer.WriteLine($"public fixed {typeStr} {field.Name}[{field.ArraySize}];");
+                                writer.WriteLine($"public fixed {typeStr} {name}[{field.ArraySize}];");
                             }
                             else
                             {
                                 for (int i = 0; i < field.ArraySize; i++)
                                 {
-                                    writer.WriteLine($"public {typeStr} {field.Name}_{i};");
+                                    writer.WriteLine($"public {typeStr} {name}_{i};");
                                 }
                             }
                         }
                         else
                         {
-                            writer.WriteLine($"public {typeStr} {field.Name};");
+                            writer.WriteLine($"public {typeStr} {name};");
                         }
                     }
                     writer.PopBlock();
@@ -163,6 +168,7 @@ namespace CodeGenerator
                     {
                         string typeStr = GetTypeString(field.Type, field.IsFunctionPointer);
                         string rawType = typeStr;
+                        var name = CorrectIdentifier(field.Name);
 
                         if (TypeInfo.WellKnownFieldReplacements.TryGetValue(field.Type, out string wellKnownFieldType))
                         {
@@ -171,8 +177,8 @@ namespace CodeGenerator
 
                         if (field.ArraySize != 0)
                         {
-                            string addrTarget = TypeInfo.LegalFixedTypes.Contains(rawType) ? $"NativePtr->{field.Name}" : $"&NativePtr->{field.Name}_0";
-                            writer.WriteLine($"public RangeAccessor<{typeStr}> {field.Name} => new RangeAccessor<{typeStr}>({addrTarget}, {field.ArraySize});");
+                            string addrTarget = TypeInfo.LegalFixedTypes.Contains(rawType) ? $"NativePtr->{name}" : $"&NativePtr->{name}_0";
+                            writer.WriteLine($"public RangeAccessor<{typeStr}> {name} => new RangeAccessor<{typeStr}>({addrTarget}, {field.ArraySize});");
                         }
                         else if (typeStr.Contains("ImVector"))
                         {
@@ -185,7 +191,7 @@ namespace CodeGenerator
 
                             if (GetWrappedType(vectorElementType + "*", out string wrappedElementType))
                             {
-                                writer.WriteLine($"public ImPtrVector<{wrappedElementType}> {field.Name} => new ImPtrVector<{wrappedElementType}>(NativePtr->{field.Name}, Unsafe.SizeOf<{vectorElementType}>());");
+                                writer.WriteLine($"public ImPtrVector<{wrappedElementType}> {name} => new ImPtrVector<{wrappedElementType}>(NativePtr->{name}, Unsafe.SizeOf<{vectorElementType}>());");
                             }
                             else
                             {
@@ -193,7 +199,7 @@ namespace CodeGenerator
                                 {
                                     vectorElementType = wrappedElementType;
                                 }
-                                writer.WriteLine($"public ImVector<{vectorElementType}> {field.Name} => new ImVector<{vectorElementType}>(NativePtr->{field.Name});");
+                                writer.WriteLine($"public ImVector<{vectorElementType}> {name} => new ImVector<{vectorElementType}>(NativePtr->{name});");
                             }
                         }
                         else
@@ -202,20 +208,20 @@ namespace CodeGenerator
                             {
                                 if (GetWrappedType(typeStr, out string wrappedTypeName))
                                 {
-                                    writer.WriteLine($"public {wrappedTypeName} {field.Name} => new {wrappedTypeName}(NativePtr->{field.Name});");
+                                    writer.WriteLine($"public {wrappedTypeName} {name} => new {wrappedTypeName}(NativePtr->{name});");
                                 }
-                                else if (typeStr == "byte*" && IsStringFieldName(field.Name))
+                                else if (typeStr == "byte*" && IsStringFieldName(name))
                                 {
-                                    writer.WriteLine($"public NullTerminatedString {field.Name} => new NullTerminatedString(NativePtr->{field.Name});");
+                                    writer.WriteLine($"public NullTerminatedString {name} => new NullTerminatedString(NativePtr->{name});");
                                 }
                                 else
                                 {
-                                    writer.WriteLine($"public IntPtr {field.Name} {{ get => (IntPtr)NativePtr->{field.Name}; set => NativePtr->{field.Name} = ({typeStr})value; }}");
+                                    writer.WriteLine($"public IntPtr {field.Name} {{ get => (IntPtr)NativePtr->{name}; set => NativePtr->{name} = ({typeStr})value; }}");
                                 }
                             }
                             else
                             {
-                                writer.WriteLine($"public ref {typeStr} {field.Name} => ref Unsafe.AsRef<{typeStr}>(&NativePtr->{field.Name});");
+                                writer.WriteLine($"public ref {typeStr} {name} => ref Unsafe.AsRef<{typeStr}>(&NativePtr->{name});");
                             }
                         }
                     }
@@ -885,6 +891,12 @@ namespace CodeGenerator
                 if (defaultVal.StartsWith("-"))
                 {
                     correctedDefault = $"({tr.Type})({defaultVal})";
+                }
+                else if (defaultVal.Contains(tr.Type))
+                {
+                    // if the type is in the default value, it is a C enum value (e.g. MyEnum_Default)
+                    //we have to change the last _ to . to make it work in C#
+                    correctedDefault = defaultVal.Replace(tr.Type + "_", tr.Type + ".");
                 }
                 else
                 {

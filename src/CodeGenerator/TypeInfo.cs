@@ -138,6 +138,24 @@ namespace CodeGenerator
             { "in", "@in" },
             { "out", "@out" },
             { "ref", "@ref" },
+            { "base", "@base" },
+            { "params", "@params"},
+            { "object", "@object"},
+            { "event", "@event"},
+            { "delegate", "@delegate"},
+            { "operator", "@operator"},
+            { "default", "@default"},
+            { "dynamic", "@dynamic"},
+            { "var", "@var"},
+            { "where", "@where"},
+            { "yield", "@yield"},
+            { "async", "@async"},
+            { "await", "@await"},
+            { "global", "@global"},
+            { "partial", "@partial"},
+            { "using", "@using"},
+            { "interface", "@interface"},
+            { "decimal", "@decimal"}
         };
 
         public static readonly HashSet<string> LegalFixedTypes = new HashSet<string>()
