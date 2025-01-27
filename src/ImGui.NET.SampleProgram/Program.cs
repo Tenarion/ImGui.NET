@@ -10,7 +10,7 @@ using Veldrid.StartupUtilities;
 using ImGuiNET;
 using ImGuizmoNET;
 using ImPlotNET;
-using imnodesNET;
+using ImNodesNET;
 
 namespace ImGuiExample
 {
@@ -124,8 +124,8 @@ namespace ImGuiExample
             if (_showAnotherWindow)
             {
                 ImGui.Begin("Another Window", ref _showAnotherWindow);
-                imnodes.BeginNodeEditor();
-                imnodes.EndNodeEditor();
+                ImNodes.BeginNodeEditor();
+                ImNodes.EndNodeEditor();
                 //if (once && ImPlot.BeginPlot("My Plot")) once = false;
                 if (ImPlot.BeginPlot("My Plot"))
                 {

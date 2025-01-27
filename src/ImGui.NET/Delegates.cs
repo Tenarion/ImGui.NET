@@ -15,3 +15,8 @@ namespace ImGuiNET
     public delegate byte Platform_GetWindowMinimized(ImGuiViewportPtr vp);
     public delegate void Platform_SetWindowTitle(ImGuiViewportPtr vp, IntPtr title);
 }
+
+namespace ImGuiNotifyNET
+{
+    public delegate void ButtonPressDelegate();
+}

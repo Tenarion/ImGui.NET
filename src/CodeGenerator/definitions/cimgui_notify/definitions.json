@@ -1,0 +1,154 @@
+{
+  "igInsertNotification": [
+    {
+      "args": "(const ImGuiToast toast)",
+      "argsT": [
+        {
+          "name": "toast",
+          "type": "const ImGuiToast"
+        }
+      ],
+      "argsoriginal": "(const ImGuiToast& toast)",
+      "call_args": "(toast)",
+      "cimguiname": "igInsertNotification",
+      "defaults": {},
+      "funcname": "InsertNotification",
+      "location": "imgui_notify:459",
+      "namespace": "ImGui",
+      "ov_cimguiname": "igInsertNotification_Toast",
+      "ret": "void",
+      "signature": "(const ImGuiToast)",
+      "stname": ""
+    },
+    {
+      "args": "(ImGuiToastType type,int dismissTime,const char* title,const char* buttonLabel,const void* onButtonPress,const char* fmt,...)",
+      "argsT": [
+        {
+          "name": "type",
+          "type": "ImGuiToastType"
+        },
+        {
+          "name": "dismissTime",
+          "type": "int"
+        },
+        {
+          "name": "title",
+          "type": "const char*"
+        },
+        {
+          "name": "buttonLabel",
+          "type": "const char*"
+        },
+        {
+          "name": "onButtonPress",
+          "type": "const void*"
+        },
+        {
+          "name": "fmt",
+          "type": "const char*"
+        },
+        {
+          "name": "...",
+          "type": "..."
+        }
+      ],
+      "argsoriginal": "(ImGuiToastType type,int dismissTime,const char* title,const char* buttonLabel,const void* onButtonPress,const char* fmt,...)",
+      "call_args": "(type,dismissTime,title,buttonLabel,onButtonPress,fmt,...)",
+      "cimguiname": "igInsertNotification",
+      "defaults": {},
+      "funcname": "InsertNotification",
+      "isvararg": "...)",
+      "location": "imgui_notify:460",
+      "namespace": "ImGui",
+      "ov_cimguiname": "igInsertNotification_ToastType",
+      "ret": "void",
+      "signature": "(ImGuiToastType,int,const char*,const char*,const void*,const char*,...)",
+      "stname": ""
+    }
+  ],
+  "igInsertNotificationV": [
+    {
+      "args": "(ImGuiToastType type,int dismissTime,const char* title,const char* buttonLabel,const void* onButtonPress,const char* fmt,va_list args)",
+      "argsT": [
+        {
+          "name": "type",
+          "type": "ImGuiToastType"
+        },
+        {
+          "name": "dismissTime",
+          "type": "int"
+        },
+        {
+          "name": "title",
+          "type": "const char*"
+        },
+        {
+          "name": "buttonLabel",
+          "type": "const char*"
+        },
+        {
+          "name": "onButtonPress",
+          "type": "const void*"
+        },
+        {
+          "name": "fmt",
+          "type": "const char*"
+        },
+        {
+          "name": "args",
+          "type": "va_list"
+        }
+      ],
+      "argsoriginal": "(ImGuiToastType type,int dismissTime,const char* title,const char* buttonLabel,const void* onButtonPress,const char* fmt,va_list args)",
+      "call_args": "(type,dismissTime,title,buttonLabel,onButtonPress,fmt,args)",
+      "cimguiname": "igInsertNotificationV",
+      "defaults": {},
+      "funcname": "InsertNotificationV",
+      "location": "imgui_notify:461",
+      "namespace": "ImGui",
+      "ov_cimguiname": "igInsertNotificationV",
+      "ret": "void",
+      "signature": "(ImGuiToastType,int,const char*,const char*,const void*,const char*,va_list)",
+      "stname": ""
+    }
+  ],
+  "igRemoveNotification": [
+    {
+      "args": "(int index)",
+      "argsT": [
+        {
+          "name": "index",
+          "type": "int"
+        }
+      ],
+      "argsoriginal": "(int index)",
+      "call_args": "(index)",
+      "cimguiname": "igRemoveNotification",
+      "defaults": {},
+      "funcname": "RemoveNotification",
+      "location": "imgui_notify:462",
+      "namespace": "ImGui",
+      "ov_cimguiname": "igRemoveNotification",
+      "ret": "void",
+      "signature": "(int)",
+      "stname": ""
+    }
+  ],
+  "igRenderNotifications": [
+    {
+      "args": "()",
+      "argsT": [],
+      "argsoriginal": "()",
+      "call_args": "()",
+      "cimguiname": "igRenderNotifications",
+      "defaults": {},
+      "funcname": "RenderNotifications",
+      "location": "imgui_notify:463",
+      "namespace": "ImGui",
+      "ov_cimguiname": "igRenderNotifications",
+      "ret": "void",
+      "signature": "()",
+      "stname": ""
+    }
+  ]
+}

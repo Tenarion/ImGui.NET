@@ -7,7 +7,7 @@ using Veldrid;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using ImPlotNET;
-using imnodesNET;
+using ImNodesNET;
 using ImGuizmoNET;
 using System.Runtime.InteropServices;
 using ImGuiNET;
@@ -70,7 +70,7 @@ namespace ImGuiExample
             var implotctx = ImPlot.CreateContext();
             ImPlot.SetCurrentContext(implotctx);
             
-            imnodes.CreateContext();
+            ImNodes.CreateContext();
             IntPtr a = IntPtr.Zero;
             IntPtr b = IntPtr.Zero;
             void* userdata = null;

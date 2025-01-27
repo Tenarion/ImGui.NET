@@ -2,8 +2,13 @@ using System.Collections.Generic;
 
 namespace CodeGenerator
 {
-    public class TypeInfo
+    public static class TypeInfo
     {
+        static TypeInfo()
+        {
+            foreach (var ctx in WellKnownPointers) WellKnownTypes[ctx] = "IntPtr";
+        }
+
         public static readonly Dictionary<string, string> WellKnownTypes = new Dictionary<string, string>()
         {
             { "bool", "byte" },
@@ -36,9 +41,6 @@ namespace CodeGenerator
             { "ImDrawListSharedData*", "IntPtr" },
             { "ImDrawCallback", "IntPtr" },
             { "size_t", "uint" },
-            { "ImGuiContext*", "IntPtr" },
-            { "ImPlotContext*", "IntPtr" },
-            { "EditorContext*", "IntPtr" },
             { "ImGuiMemAllocFunc", "IntPtr" },
             { "ImGuiMemFreeFunc", "IntPtr" },
             { "ImFontBuilderIO", "IntPtr" },
@@ -57,6 +59,20 @@ namespace CodeGenerator
             { "ImPlotTransform", "IntPtr" },
             { "ImGuiKeyChord", "ImGuiKey" },
             { "ImGuiSelectionUserData", "long" },
+            { "ImNodesMiniMapNodeHoveringCallback", "void*" },
+            { "ImNodesMiniMapNodeHoveringCallbackUserData", "void*" },
+            { "ImGuiToast" , "IntPtr" }
+        };
+
+        public static readonly List<string> WellKnownPointers = new List<string>()
+        {
+            "ImGuiContext*",
+            "ImPlotContext*",
+            "EditorContext*",
+            "ImNodesContext*",
+            "ImNodesEditorContext*",
+            "ImGuiWindow*",
+            "ImGuiToast*",
         };
         
         public static readonly List<string> WellKnownEnums = new List<string>()
@@ -130,6 +146,7 @@ namespace CodeGenerator
             { "ImPlotRect()", "new ImPlotRect()" },
             { "ImPlotCond_Once", "ImPlotCond.Once" },
             { "ImPlotRange()", "new ImPlotRange()" },
+            { "ImNodesMiniMapLocation_TopLeft", "ImNodesMiniMapLocation.TopLeft"}
             
         };
 

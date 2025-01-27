@@ -47,6 +47,8 @@ namespace CodeGenerator
                 {
                     variantsJson = JObject.Load(jr);
                 }
+            } else {
+                variantsJson = new JObject();
             }
 
             Variants = new Dictionary<string, MethodVariant>();

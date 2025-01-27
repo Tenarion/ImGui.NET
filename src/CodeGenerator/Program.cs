@@ -44,10 +44,12 @@ namespace CodeGenerator
             {
                 "cimgui" => "ImGuiNET",
                 "cimplot" => "ImPlotNET",
-                "cimnodes" => "imnodesNET",
+                "cimnodes" => "ImNodesNET",
                 "cimguizmo" => "ImGuizmoNET",
                 "cimgui_extra" => "ImGuiExtraNET",
                 "cimgui_knobs" => "ImGuiKnobsNET",
+                "cimgui_notify" => "ImGuiNotifyNET",
+                "cimgui_theme" => "ImGuiThemeNET",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -59,6 +61,8 @@ namespace CodeGenerator
                 "cimguizmo" => true,
                 "cimgui_extra" => true,
                 "cimgui_knobs" => true,
+                "cimgui_notify" => true,
+                "cimgui_theme" => true,
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -66,10 +70,12 @@ namespace CodeGenerator
             {
                 "cimgui" => "ImGui",
                 "cimplot" => "ImPlot",
-                "cimnodes" => "imnodes",
+                "cimnodes" => "ImNodes",
                 "cimguizmo" => "ImGuizmo",
                 "cimgui_extra" => "ImGuiExtra",
                 "cimgui_knobs" => "ImGuiKnobs",
+                "cimgui_notify" => "ImGuiNotify",
+                "cimgui_theme" => "ImGuiTheme",
                 _ => throw new NotImplementedException($"Library \"{libraryName}\" is not supported.")
             };
 
@@ -81,6 +87,8 @@ namespace CodeGenerator
                 "cimguizmo" => "cimgui",
                 "cimgui_extra" => "cimgui",
                 "cimgui_knobs" => "cimgui",
+                "cimgui_notify" => "cimgui",
+                "cimgui_theme" => "cimgui",
                 _ => throw new NotImplementedException()
             };
             
@@ -658,7 +666,7 @@ namespace CodeGenerator
                     marshalledParameters[i] = new MarshalledParameter(wrappedParamType, false, nativeArgName, false);
                     preCallLines.Add($"{tr.Type} {nativeArgName} = {correctedIdentifier}.NativePtr;");
                 }
-                else if ((tr.Type.EndsWith("*") || tr.Type.Contains("[") || tr.Type.EndsWith("&")) && tr.Type != "void*" && tr.Type != "ImGuiContext*" && tr.Type != "ImPlotContext*"&& tr.Type != "EditorContext*")
+                else if ((tr.Type.EndsWith("*") || tr.Type.Contains("[") || tr.Type.EndsWith("&")) && tr.Type != "void*" && !TypeInfo.WellKnownPointers.Contains(tr.Type))
                 {
                     string nonPtrType;
                     if (tr.Type.Contains("["))
@@ -870,7 +878,7 @@ namespace CodeGenerator
 
         private static bool CorrectDefaultValue(string defaultVal, TypeReference tr, out string correctedDefault)
         {
-            if (tr.Type == "ImGuiContext*" || tr.Type == "ImPlotContext*" || tr.Type == "EditorContext*")
+            if (TypeInfo.WellKnownPointers.Contains(tr.Type))
             {
                 correctedDefault = "IntPtr.Zero";
                 return true;
@@ -905,6 +913,12 @@ namespace CodeGenerator
                 return true;
             }
 
+            if(tr.Type == "float" && defaultVal.Contains(".f"))
+            {
+                correctedDefault = defaultVal.Replace(".f", "f");
+                return true;
+            }
+
             correctedDefault = defaultVal;
             return true;
         }
@@ -927,6 +941,10 @@ namespace CodeGenerator
                     if (isFunctionPointer) { typeStr = "IntPtr"; }
                 }
             }
+
+            if(typeStr.StartsWith("struct ")) typeStr = typeStr.Replace("struct ", string.Empty);
+
+            if(typeStr.EndsWith('_')) typeStr = typeStr[..^1];
 
             return typeStr;
         }
